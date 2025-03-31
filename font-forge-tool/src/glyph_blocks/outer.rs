@@ -1339,7 +1339,10 @@ r#"
  812 83 821 110 832 150 c 0
  838 172 858 186 880 186 c 0"#,
 ),
-GlyphDescriptor::new_with_anchor("toki", Anchor::new_scale(AnchorType::Base, (500, 280)),
+GlyphDescriptor::new_with_anchors(
+    "toki",
+    Anchor::new_scale(AnchorType::Base, (500, 280)),
+    Anchor::new_special(AnchorType::Base, (500, 280), "toki+pona"),
 r#"
 149 280 m 0
  149 473 306 630 499 630 c 0

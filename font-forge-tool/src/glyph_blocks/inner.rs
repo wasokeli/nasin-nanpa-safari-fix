@@ -2196,7 +2196,10 @@ r#"
  -703 511 l 2
  -703 539 -681 561 -653 561 c 0"#,
 ),
-GlyphDescriptor::new_with_anchor("pona", Anchor::new_scale(AnchorType::Mark, (-500, 400)),
+GlyphDescriptor::new_with_anchors(
+    "pona",
+    Anchor::new_scale(AnchorType::Mark, (-500, 400)),
+    Anchor::new_special(AnchorType::Mark, (-500, 500), "toki+pona"),
 r#"
 -730 465 m 0
  -730 490 -710 515 -680 515 c 0

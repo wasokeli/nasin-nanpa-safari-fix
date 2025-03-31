@@ -125,6 +125,7 @@ impl Rep {
 pub enum AnchorClass {
     Stack,
     Scale,
+    Special(&'static str),
 }
 
 /// An anchor type, either base (for lower/outer) or mark (for upper/inner)
@@ -165,10 +166,19 @@ impl Anchor {
         }
     }
 
+    pub const fn new_special(ty: AnchorType, pos: (isize, isize), name: &'static str) -> Self {
+        Self {
+            class: AnchorClass::Special(name),
+            ty,
+            pos,
+        }
+    }
+
     fn gen(&self) -> String {
         let class = match self.class {
             AnchorClass::Stack => "stack",
             AnchorClass::Scale => "scale",
+            AnchorClass::Special(s) => s,
         };
         let x = self.pos.0;
         let y = self.pos.1;
@@ -188,15 +198,17 @@ pub struct GlyphBasic {
     pub width: usize,
     pub rep: Rep,
     pub anchor: Option<Anchor>,
+    pub anchor2: Option<Anchor>,
 }
 
 impl GlyphBasic {
-    pub fn new(name: impl Into<String>, width: usize, rep: Rep, anchor: Option<Anchor>) -> Self {
+    pub fn new(name: impl Into<String>, width: usize, rep: Rep, anchor: Option<Anchor>, anchor2: Option<Anchor>) -> Self {
         Self {
             name: name.into(),
             width,
             rep,
             anchor,
+            anchor2,
         }
     }
 }
@@ -215,7 +227,7 @@ impl GlyphEnc {
 
     pub fn new_from_parts(enc: EncPos, name: impl Into<String>, width: usize, rep: Rep) -> Self {
         Self {
-            glyph: GlyphBasic::new(name, width, rep, None),
+            glyph: GlyphBasic::new(name, width, rep, None, None),
             enc,
         }
     }
@@ -364,7 +376,9 @@ impl Lookups {
                 } else if full_name.eq("aTok_VAR05") && variation == NasinNanpaVariation::Main {
 r#" Ligature2: "'liga' VAR" aTok exclam question
 Ligature2: "'liga' VAR" aTok question exclam
-"#              } else { "" };
+"#              } else if full_name.eq("muteTok") {
+                    "Ligature2: \"'liga' VAR\" lukaTok ZWJ lukaTok ZWJ lukaTok ZWJ lukaTok\n"
+                } else { "" };
 
                 let arrow_lig = if full_name.contains("niTok_arrow") {
                     format!("Ligature2: \"'liga' VAR\" {glyph} ZWJ {sel}\n")
@@ -513,12 +527,13 @@ impl GlyphFull {
         width: usize,
         rep: Rep,
         anchor: Option<Anchor>,
+        anchor2: Option<Anchor>,
         encoding: Encoding,
         lookups: Lookups,
         cc_subs: Cc,
     ) -> Self {
         Self {
-            glyph: GlyphBasic::new(name, width, rep, anchor),
+            glyph: GlyphBasic::new(name, width, rep, anchor, anchor2),
             encoding,
             lookups,
             cc_subs,
@@ -583,12 +598,9 @@ impl GlyphFull {
         } else {
             ""
         };
-        let anchor = if let Some(anchor) = &self.glyph.anchor {
-            anchor.gen()
-        } else {
-            String::new()
-        };
-        format!("\nStartChar: {full_name}\n{encoding}\nWidth: {width}\n{flags}{anchor}LayerCount: 2\n{representation}{lookups}{cc_subs}{color}\nEndChar\n")
+        let anchor = if let Some(anchor) = &self.glyph.anchor { anchor.gen() } else { String::new() };
+        let anchor2 = if let Some(anchor2) = &self.glyph.anchor2 { anchor2.gen() } else { String::new() };
+        format!("\nStartChar: {full_name}\n{encoding}\nWidth: {width}\n{flags}{anchor2}{anchor}LayerCount: 2\n{representation}{lookups}{cc_subs}{color}\nEndChar\n")
     }
 }
 
@@ -597,6 +609,7 @@ pub struct GlyphDescriptor {
     pub spline_set: &'static str,
     pub width: Option<usize>,
     pub anchor: Option<Anchor>,
+    pub anchor2: Option<Anchor>,
 }
 
 impl GlyphDescriptor {
@@ -606,6 +619,7 @@ impl GlyphDescriptor {
             spline_set,
             width: None,
             anchor: None,
+            anchor2: None,
         }
     }
 
@@ -619,6 +633,7 @@ impl GlyphDescriptor {
             spline_set,
             width: Some(width),
             anchor: None,
+            anchor2: None,
         }
     }
 
@@ -632,6 +647,22 @@ impl GlyphDescriptor {
             spline_set,
             width: None,
             anchor: Some(anchor),
+            anchor2: None,
+        }
+    }
+
+    pub const fn new_with_anchors(
+        name: &'static str,
+        anchor: Anchor,
+        anchor2: Anchor,
+        spline_set: &'static str,
+    ) -> Self {
+        Self {
+            name,
+            spline_set,
+            width: None,
+            anchor: Some(anchor),
+            anchor2: Some(anchor2),
         }
     }
 }
@@ -735,12 +766,14 @@ impl GlyphBlock {
                      spline_set,
                      width,
                      anchor,
+                     anchor2,
                  }| {
                     GlyphBasic::new(
                         name.to_string(),
                         width.unwrap_or(fallback_width),
                         Rep::new(spline_set.to_string(), vec![]),
                         anchor.clone(),
+                        anchor2.clone(),
                     )
                 },
             )
@@ -801,6 +834,7 @@ impl GlyphBlock {
                             Some(anchor) => Some(anchor.clone()),
                             None => glyph.anchor,
                         },
+                        None,
                     );
                     g
                 },
@@ -829,6 +863,7 @@ impl GlyphBlock {
                 format!("empty{i:04}", i = *ff_pos),
                 width,
                 Rep::default(),
+                None,
                 None,
                 Encoding::new(*ff_pos, EncPos::None),
                 Lookups::None,
