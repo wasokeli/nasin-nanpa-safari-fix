@@ -1342,7 +1342,7 @@ r#"
 GlyphDescriptor::new_with_anchors(
     "toki",
     Anchor::new_scale(AnchorType::Base, (500, 280)),
-    Anchor::new_special(AnchorType::Base, (500, 280), "toki+pona"),
+    Anchor::new_special(AnchorType::Base, (500, 280), "tokipona"),
 r#"
 149 280 m 0
  149 473 306 630 499 630 c 0

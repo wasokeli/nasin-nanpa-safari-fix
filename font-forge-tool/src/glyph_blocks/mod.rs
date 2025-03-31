@@ -164,6 +164,6 @@ ForceBold 5 false
 LanguageGroup 1 0
 ExpansionFactor 4 0.06
 EndPrivate
-AnchorClass2: "toki+pona" "'mark' SPECIAL" "stack" "'mark' STACK" "scale" "'mark' SCALE"
+AnchorClass2: "tokipona" "'mark' SPECIAL" "stack" "'mark' STACK" "scale" "'mark' SCALE"
 "#;
 
