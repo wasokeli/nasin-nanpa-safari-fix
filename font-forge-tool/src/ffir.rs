@@ -526,13 +526,13 @@ impl Cc {
             } else if full_name.eq("quotesingle") {
                 "MultipleSubs2: \"'cc01' CART\" combCartExt5TickTok\nMultipleSubs2: \"'cc02' CONT\" combContExtHalfTok\n".to_string()
             } else {
-                let ss00 = if full_name.eq("space") {
-                    "Substitution2: \"'ss00' SP TO ZWSP\" ZWSP\n"
+                let sqsh = if full_name.eq("space") {
+                    "Position2: \"'sqsh' SPACE SHIFT\" dx=0 dy=0 dh=-500 dv=0\n"
                 } else {
                     ""
                 };
 
-                format!("{ss00}MultipleSubs2: \"'cc01' CART\" {full_name} combCartExtHalfTok\nMultipleSubs2: \"'cc02' CONT\" {full_name} combContExtHalfTok\n")
+                format!("{sqsh}MultipleSubs2: \"'cc01' CART\" {full_name} combCartExtHalfTok\nMultipleSubs2: \"'cc02' CONT\" {full_name} combContExtHalfTok\n")
             },
             
             Cc::Participant => if full_name.contains("Tick") {

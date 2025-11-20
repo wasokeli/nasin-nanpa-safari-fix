@@ -77,8 +77,6 @@ pub const LOOKUPS: &str = r#"Lookup: 4 0 0 "'liga' SPACE" { "'liga' SPACE"  } ['
 Lookup: 4 0 0 "'liga' WORDS" { "'liga' WORD"  } ['liga' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
 Lookup: 3 0 0 "'rand' RAND VARIATIONS" { "'rand' RAND VARIATIONS"  } ['rand' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
 Lookup: 4 0 0 "'liga' VARIATIONS" { "'liga' VAR"  } ['liga' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
-Lookup: 5 0 0 "'calt' REMOVE SPACE" { "'calt' REMOVE SPACE"  } ['calt' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
-Lookup: 1 0 0 "'ss00' SP TO ZWSP" { "'ss00' SP TO ZWSP"  } ['ss00' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
 Lookup: 4 0 0 "'liga' START CONTAINER" { "'liga' START CONTAINER"  } ['liga' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
 Lookup: 5 0 0 "'calt' CHANGE ZWJ" { "'calt' CHANGE ZWJ"  } ['calt' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
 Lookup: 1 0 0 "'ss01' ZWJ TO SCALE" { "'ss01' ZWJ TO SCALE"  } ['ss01' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
@@ -90,19 +88,21 @@ Lookup: 6 0 0 "'calt' CART AND CONT" { "'calt' CART AND CONT"  } ['calt' ('DFLT'
 Lookup: 2 2 0 "'cc01' CART" { "'cc01' CART"  } ['cc01' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
 Lookup: 2 2 0 "'cc02' CONT" { "'cc02' CONT"  } ['cc02' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
 Lookup: 4 0 0 "'liga' CC CLEANUP" { "'liga' CC CLEANUP"  } ['liga' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
+Lookup: 257 0 0 "'sqsh' SPACE SHIFT" { "'sqsh' SPACE SHIFT"  } ['sqsh' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
+Lookup: 263 0 0 "'kern' FIX SPACE" { "'kern' FIX SPACE"  } ['kern' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
 Lookup: 260 0 0 "'mark' POSITION COMBO" { "'mark' SPECIAL"  "'mark' STACK"  "'mark' SCALE"  } ['mark' ('DFLT' <'dflt' 'latn' > 'latn' <'dflt' > ) ]
 MarkAttachClasses: 1
 "#;
 
 pub const AFTER_SPACE_CALT: &str = r#" 2 0 0
-  ClsList: 2 1
+  ClsList: 1 2
   BClsList:
   FClsList:
  1
-  SeqLookup: 1 "'ss00' SP TO ZWSP"
-  ClassNames: "All_Others" "sp" "tok"
-  BClassNames: "All_Others" "sp" "tok"
-  FClassNames: "All_Others" "sp" "tok"
+  SeqLookup: 1 "'sqsh' SPACE SHIFT"
+  ClassNames: "All_Others" "other" "space"
+  BClassNames: "All_Others"
+  FClassNames: "All_Others"
 EndFPST
 "#;
 
@@ -149,7 +149,7 @@ NameList: AGL For New Fonts
 DisplaySize: -72
 AntiAlias: 1
 FitToEm: 1
-WinInfo: 256 16 17
+WinInfo: 304 16 6
 BeginPrivate: 12
 BlueValues 22 [-2 1 414 417 796 797]
 OtherBlues 11 [-385 -384]

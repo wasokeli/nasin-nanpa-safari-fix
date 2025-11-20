@@ -386,16 +386,14 @@ fn gen_nasin_nanpa(variation: NasinNanpaVariation) -> std::io::Result<()> {
             })
             .join(" ");
 
-        let prenames = (1..9).map(|x| format!("combCartExt{x}TickTok")).join(" ");
-        let prenames = format!("{prenames} endCartTok endContTok endRevContTok endCartAltTok teTok toTok middleDotTok colonTok middleDot2Tok middleDot3Tok");
+        let aa = (1..5).map(|x| format!("combCartExt{x}TickTok")).join(" ");
+        let bb = (5..9).map(|x| format!("combCartExt{x}TickTok")).join(" ");
+        let prenames = format!("{aa} combCartExtHalfTok combContExtHalfTok {bb} endCartTok combCartExtTok endContTok combContExtTok endRevContTok endCartAltTok teTok toTok middleDotTok colonTok middleDot2Tok middleDot3Tok");
 
+        let other = put_in_class(format!("{prenames} {names}"));
         let sp = put_in_class("space".to_string());
-        let tok = put_in_class(format!("{prenames} {names}"));
 
-        let put_in_sub = |c: &str| format!("  {c}{sp}\n  {c}{tok}\n");
-        let subs = format!("{}{}{}", put_in_sub(""), put_in_sub("B"), put_in_sub("F"));
-
-        format!("ContextSub2: class \"'calt' REMOVE SPACE\" 3 3 3 1\n{subs}")
+        format!("ContextPos2: class \"'kern' FIX SPACE\" 3 1 1 1\n  {other}\n  {sp}\n")
     };
 
     let zwj_calt = {
