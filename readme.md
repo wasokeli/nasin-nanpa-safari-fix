@@ -11,10 +11,12 @@ As far as anyone has been able to determine, the only workarounds are:
 2. Author a font such that the `space` character is zero-width, and spaces can be inserted some other way, like U+3000 ideographic space, or `space space` or `z z` ligatures.
 
 This repo modifies nasin nanpa in three ways:
-1. Reduce the `space` character to be zero-width ([issue](https://github.com/etbcor/nasin-nanpa/issues/72))
+1. Reduce the `space` character to be zero-width[^2]
 2. Allow `|` to enter a space
-3. Move the hyperline underline down a bit in Firefox, so that it's not broken up by regular words ([issue](https://github.com/etbcor/nasin-nanpa/issues/75))
+3. Move the hyperline underline down a bit in Firefox, so that it's not broken up by regular words[^3]
 
 You can insert a space with the `bar`, `space space`, `z z`, ligatures, which look like `|`, `  `, `zz`, respectively.
 
 [^1]: I tested it with a custom font; the `p o n a space` ligature is being used, not the `p o n a` one.
+[^2]: https://github.com/etbcor/nasin-nanpa/issues/72
+[^3]: https://github.com/etbcor/nasin-nanpa/issues/75
