@@ -10,9 +10,10 @@ As far as anyone has been able to determine, the only workarounds are:
 1. Avoid putting spaces between words, by using UCSUR text, orbytypinglikethis.
 2. Author a font such that the `space` character is zero-width, and spaces can be inserted some other way, like U+3000 ideographic space, or `space space` or `z z` ligatures.
 
-This repo modifies nasin nanpa in two ways:
+This repo modifies nasin nanpa in three ways:
 1. Reduce the `space` character to be zero-width
 2. Allow `|` to enter a space
+3. Move the hyperline underline down a bit in Firefox, so that it's not broken up by regular words
 
 You can insert a space with the `bar`, `space space`, `z z`, ligatures, which look like `|`, `  `, `zz`, respectively.
 
